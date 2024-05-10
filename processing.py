@@ -3,19 +3,27 @@ import time
 import shutil
 
 
-def loading(length=100):
+def indicator(rate, length=100):
+    if rate == 100:
+        print(f'\r[{"=" * length}] 100%')
+        return
+
     coefficient = length / 100
+    progress = int(rate * coefficient)
+    print(f'\r[{"=" * progress}{" " * (length - progress)}] {rate}%', end='')
+
+
+def process(length=100):
     for i in range(101):
-        progress = int(i * coefficient)
-        print(f'\r[{"=" * progress}{" " * (length - progress)}] {i}%', end='')
+        indicator(i, length)
         time.sleep(0.1)
     print('\nComplete!')
 
 # デフォルト
-loading()
+process()
 
 # 短め
-loading(10)
+process(10)
 
 # ターミナルの幅に合わせる
-loading(shutil.get_terminal_size().columns - 10)
+process(shutil.get_terminal_size().columns - 10)
